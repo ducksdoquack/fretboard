@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+
+	<name>Fretboard</name>
+	<id>com.github.stupidduck.fretboarddev</id>
+
+	<dependency type="executable" location="inx">fretboard.py</dependency>
+
+    <param name="descr" type="description">Draw a fretboard using the 12th root of 2.</param>
+	<spacer/>
+    <param name="strings" type="int" min="1" max="16" gui-text="Number of strings :">4</param>
+	<param name="draw_strings" type="bool" gui-text="Draw the strings ?">true</param>
+	<param name="extend_strings" type="bool" gui-text="Extend the strings ?">false</param>
+	<param name="scale_length_bass" type="float" min="100" max="2000" gui-text="Scale length (bass side):">863.6</param>
+    <separator/>
+	<param name="fanned" type="bool" indent="1" gui-text="Fanned fret ?">false</param>
+    <param name="scale_length_treble" type="float" min="100" max="2000" indent="1" gui-text="Scale length (treble side):">863.6</param>
+    <param name="fan_pivot" type="int" min="1" max="12" indent="1" gui-text="Fret to be left horizontal :">7</param>
+	<separator/>
+	<param name="nut_width" type="float" min="32" max="100" gui-text="Nut width :">44</param>
+    <param name="strings_spacing_at_nut" min="5" max="20" type="float" gui-text="String spacing at nut :">11.5</param>
+    <param name="strings_spacing_at_bridge" min="5" max="20" type="float" gui-text="String spacing at bridge :">18.0</param>
+    <param name="frets" type="int" min="0" max="30" gui-text="Number of frets :">19</param>
+	<param name="bass_compensation" type="float" min="0" max="20" gui-text="Bass side compensation :">8.0</param>
+	<param name="treble_compensation" type="float" min="0" max="20" gui-text="Treble side compensation :">4.0</param>
+
+	<effect needs-live-preview="false">
+	    <object-type>path</object-type>
+	    <effects-menu>
+	        <submenu _name="Luthier"/>
+	    </effects-menu>
+	</effect>
+
+	<script>
+	    <command location="inx" interpreter="python">fretboard.py</command>
+	</script>
+
+</inkscape-extension>
