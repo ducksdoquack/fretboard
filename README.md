@@ -1,0 +1,3 @@
+Fretboard is an extension for Inkscape.
+
+Draw your fretboard, regular or multi-scale. Change string spacing, nut width, scales, etc...

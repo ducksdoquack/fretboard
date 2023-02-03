@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import math
-import copy
 import inkex
 from inkex import Group, PathElement, ClipPath, Polygon
 from Point import Point
@@ -134,11 +133,11 @@ class Fretboard(inkex.GenerateExtension):
         fb_side_bass = Segment(Point(self._bass_string.start.x + string_to_fb_side, self._bass_string.start.y), Point(self._bass_string.end.x + string_to_fb_side, self._bass_string.end.y))
         #self._fb_sides.append(Segment(Point(fb_side_bass.start.x, fb_side_bass.start.y), Point(fb_side_bass.end.x, fb_side_bass.end.y)))
         fb_side_bass.extend(100)
-        self._fb_sides.append(copy.deepcopy(fb_side_bass))
+        self._fb_sides.append(fb_side_bass)
         fb_side_treble = Segment(Point(self._treble_string.start.x - string_to_fb_side, self._treble_string.start.y), Point(self._treble_string.end.x - string_to_fb_side, self._treble_string.end.y))
         #self._fb_sides.append(Segment(Point(fb_side_treble.start.x, fb_side_treble.start.y), Point(fb_side_treble.end.x, fb_side_treble.end.y)))
         fb_side_treble.extend(100)
-        self._fb_sides.append(copy.deepcopy(fb_side_treble))
+        self._fb_sides.append(fb_side_treble)
         
         # LEFT
         points.append(f"{fb_side_bass.end.x},{fb_side_bass.end.y} {fb_side_bass.start.x},{fb_side_bass.start.y}")
