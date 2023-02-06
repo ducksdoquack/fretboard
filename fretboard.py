@@ -130,12 +130,10 @@ class Fretboard(inkex.GenerateExtension):
         points = []
 
         string_to_fb_side = (self.options.nut_width - (self.options.strings_spacing_at_nut * (self.options.strings - 1))) / 2
-        fb_side_bass = Segment(Point(self._bass_string.start.x + string_to_fb_side, self._bass_string.start.y), Point(self._bass_string.end.x + string_to_fb_side, self._bass_string.end.y))
-        #self._fb_sides.append(Segment(Point(fb_side_bass.start.x, fb_side_bass.start.y), Point(fb_side_bass.end.x, fb_side_bass.end.y)))
+        fb_side_bass = Segment(Point(self._bass_string.start.x - string_to_fb_side, self._bass_string.start.y), Point(self._bass_string.end.x - string_to_fb_side, self._bass_string.end.y))
         fb_side_bass.extend(100)
         self._fb_sides.append(fb_side_bass)
-        fb_side_treble = Segment(Point(self._treble_string.start.x - string_to_fb_side, self._treble_string.start.y), Point(self._treble_string.end.x - string_to_fb_side, self._treble_string.end.y))
-        #self._fb_sides.append(Segment(Point(fb_side_treble.start.x, fb_side_treble.start.y), Point(fb_side_treble.end.x, fb_side_treble.end.y)))
+        fb_side_treble = Segment(Point(self._treble_string.start.x + string_to_fb_side, self._treble_string.start.y), Point(self._treble_string.end.x + string_to_fb_side, self._treble_string.end.y))
         fb_side_treble.extend(100)
         self._fb_sides.append(fb_side_treble)
         
