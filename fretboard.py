@@ -39,7 +39,11 @@ class Fretboard(inkex.GenerateExtension):
 
 
     def generate(self):
-        self.check_input_values()
+        if not self.check_input_values():
+            return
+
+        if self.options.fanned == False:
+            self.options.scale_length_treble = self.options.scale_length_bass
 
         fretboard_group = Group.new('fretboard')
         strings_group = Group.new('strings')
@@ -76,9 +80,36 @@ class Fretboard(inkex.GenerateExtension):
 
 
     def check_input_values(self):
-        if self.options.fanned == False:
-            self.options.scale_length_treble = self.options.scale_length_bass
-    
+        try:
+            if self.options.scale_length_bass < 0:
+                raise inkex.utils.AbortExtension("Bass side scale length should be positive.")
+            elif self.options.scale_length_bass < self.options.scale_length_treble:
+                raise inkex.utils.AbortExtension("Bass side scale length should be longer than treble side.")
+
+            if self.options.scale_length_treble < 0:
+                raise inkex.utils.AbortExtension("Treble side scale length should be positive.")
+            
+            if self.options.strings <= 0:
+                raise inkex.utils.AbortExtension("Number of strings should be 1 or more")
+            
+            if self.options.fan_pivot > self.options.frets or self.options.fan_pivot < 0:
+                raise inkex.utils.AbortExtension(f"The horizontal fret should be between 0 and {self.options.frets}.")
+            
+            if self.options.nut_width < 0:
+                raise inkex.utils.AbortExtension("Nut width should be positive.")
+            
+            if self.options.strings_spacing_at_nut < 0:
+                raise inkex.utils.AbortExtension("String spacing at nut should be positive.")
+
+            if self.options.strings_spacing_at_bridge < 0:
+                raise inkex.utils.AbortExtension("String spacing at bridge width should be positive.")
+
+        except inkex.utils.AbortExtension as e:
+            inkex.utils.errormsg(e)
+            return False
+        
+        return True
+
     
     def nut(self):
         nut = PathElement()
