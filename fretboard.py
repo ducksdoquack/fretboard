@@ -48,7 +48,7 @@ class Fretboard(inkex.GenerateExtension):
         clip_contour_group = Group.new('contour')
         fb_side_group = Group.new('fb_side')
 
-        strings_group.append(self.outer_strings())
+        strings_group.append(self.strings())
         frets_group.append(self.nut())
         frets_group.append(self.frets())
         bridge_group.append(self.bridge())
@@ -154,8 +154,8 @@ class Fretboard(inkex.GenerateExtension):
         lower_right = self._frets[self.options.frets].intersect(self._fb_sides[1])
 
         return Polygon(points = f"{upper_left.x},{upper_left.y} {upper_right.x},{upper_right.y} {lower_right.x},{lower_right.y} {lower_left.x},{lower_left.y}")
-
-
+    
+    
     def outer_strings(self):
         dx = ((self.options.strings_spacing_at_bridge * (self.options.strings - 1)) / 2) - ((self.options.strings_spacing_at_nut * (self.options.strings - 1)) / 2)
         
@@ -177,15 +177,31 @@ class Fretboard(inkex.GenerateExtension):
              self.find_coord_on_segment(self._treble_string, self.distance_to_nut(self.options.scale_length_treble, self.options.fan_pivot)).y
         self._treble_string.translate(dx = tx, dy = ty)
 
-        outer_strings = PathElement()
-        path = []
-        path.append(f"M {self._bass_string.start.x} {self._bass_string.start.y}")
-        path.append(f" L {self._bass_string.end.x} {self._bass_string.end.y}")
-        path.append(f"M {self._treble_string.start.x} {self._treble_string.start.y}")
-        path.append(f" L {self._treble_string.end.x} {self._treble_string.end.y}")
-        outer_strings.path = ''.join(path)
 
-        return outer_strings
+    def strings(self):
+        self.outer_strings()
+        inner_strings = PathElement()
+        path = []
+        
+        outer_dx = ((self.options.strings_spacing_at_bridge * (self.options.strings - 1)) / 2) - ((self.options.strings_spacing_at_nut * (self.options.strings - 1)) / 2)
+        
+        for string in range(0, self.options.strings):
+            start_x = self._bass_string.start.x + self.options.strings_spacing_at_nut * string
+            start_y = self._bass_string.start.y + (self._treble_string.start.y * (string / (self.options.strings - 1)))
+
+            end_x = self._bass_string.end.x + self.options.strings_spacing_at_bridge * string
+            end_y = self._bass_string.end.y - ((self._bass_string.end.y - self._treble_string.end.y) * (string / (self.options.strings - 1)))
+            
+            string_segment = Segment(Point(start_x, start_y), Point(end_x, end_y))
+            
+            if self.options.extend_strings:
+                string_segment.extend(200)
+
+            path.append(f"M {string_segment.start.x} {string_segment.start.y} L {string_segment.end.x} {string_segment.end.y}")
+
+        inner_strings.path = ''.join(path)
+
+        return inner_strings
 
 
     @staticmethod
