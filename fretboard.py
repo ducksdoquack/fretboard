@@ -157,19 +157,21 @@ class Fretboard(inkex.GenerateExtension):
 
 
     def outer_strings(self):
+        dx = ((self.options.strings_spacing_at_bridge * (self.options.strings - 1)) / 2) - ((self.options.strings_spacing_at_nut * (self.options.strings - 1)) / 2)
+        
         # BASS
         self._bass_string.start = Point(0, 0)
-        dx = ((self.options.strings_spacing_at_bridge - self.options.strings_spacing_at_nut) / 2) * self.options.strings
+        #dx = ((self.options.strings_spacing_at_bridge - self.options.strings_spacing_at_nut) * self.options.strings) / 2
         dy = math.sqrt(math.pow(self.options.scale_length_bass, 2) - math.pow(dx, 2))
         self._bass_string.end = Point(-dx, dy)
 
         # TREBLE
         self._treble_string.start = Point(0, 0)
-        dx = ((self.options.strings_spacing_at_bridge - self.options.strings_spacing_at_nut) / 2) * self.options.strings
+        #dx = ((self.options.strings_spacing_at_bridge - self.options.strings_spacing_at_nut) * self.options.strings) / 2
         dy = math.sqrt(math.pow(self.options.scale_length_treble, 2) - math.pow(dx, 2))
         self._treble_string.end = Point(dx, dy)
 
-        # TRANSLATE FROM PIVOT
+        # TRANSLATE FROM PIVOT (0, 0)
         tx = self.options.strings_spacing_at_nut * (self.options.strings - 1)
         ty = self.find_coord_on_segment(self._bass_string, self.distance_to_nut(self.options.scale_length_bass, self.options.fan_pivot)).y - \
              self.find_coord_on_segment(self._treble_string, self.distance_to_nut(self.options.scale_length_treble, self.options.fan_pivot)).y
