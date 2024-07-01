@@ -197,7 +197,8 @@ class Fretboard(inkex.GenerateExtension):
             if self.options.extend_strings:
                 string_segment.extend(200)
 
-            path.append(f"M {string_segment.start.x} {string_segment.start.y} L {string_segment.end.x} {string_segment.end.y}")
+            if self.options.draw_strings:
+                path.append(f"M {string_segment.start.x} {string_segment.start.y} L {string_segment.end.x} {string_segment.end.y}")
 
         inner_strings.path = ''.join(path)
 
